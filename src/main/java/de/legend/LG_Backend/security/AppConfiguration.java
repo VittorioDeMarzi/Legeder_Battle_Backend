@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.NoSuchElementException;
 
 @Configuration
-@EnableConfigurationProperties(RsaKeyProperties.class)
 public class AppConfiguration {
 
     UserRepository userRepository;
@@ -19,7 +18,7 @@ public class AppConfiguration {
         this.userRepository = userRepository;
     }
 
-    UserDetailsService userDetails() {
+    UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 
