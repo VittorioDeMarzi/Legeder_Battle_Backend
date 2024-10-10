@@ -2,6 +2,8 @@ package de.legend.LG_Backend.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class HeroType {
 
@@ -9,7 +11,7 @@ public class HeroType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column
@@ -17,7 +19,6 @@ public class HeroType {
 
     @Column
     private int maxPower;
-
 
     public long getId() {
         return id;
