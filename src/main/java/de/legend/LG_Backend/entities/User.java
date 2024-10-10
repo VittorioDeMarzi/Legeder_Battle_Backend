@@ -20,6 +20,7 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+
     @Column(nullable = false)
     private String password;
 
@@ -27,6 +28,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
