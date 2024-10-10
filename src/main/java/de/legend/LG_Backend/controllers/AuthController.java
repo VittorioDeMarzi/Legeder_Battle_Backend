@@ -6,10 +6,7 @@ import de.legend.LG_Backend.servicies.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/legender_battle/auth")
@@ -28,6 +25,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtDto> login (Authentication authentication) {
+        System.out.println("test");
         return ResponseEntity.ok(new JwtDto(authService.getJwt(authentication)));
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "Hello world";
     }
 }
