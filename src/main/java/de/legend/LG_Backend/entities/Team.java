@@ -29,7 +29,7 @@ public class Team {
 
     @OneToMany
     private List<Hero> heroes;
-
+    
     @Transient
     private int heroListSize;
 
