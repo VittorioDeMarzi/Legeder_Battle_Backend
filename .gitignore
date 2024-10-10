@@ -1,4 +1,10 @@
 HELP.md
+
+.pem
+
+src/main/resources/application.properties
+src/main/resources/certs
+
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
