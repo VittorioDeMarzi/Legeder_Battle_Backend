@@ -28,6 +28,7 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -64,4 +65,5 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

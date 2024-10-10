@@ -9,6 +9,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -76,6 +77,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/api/v1/legender_battle/auth/signup")
                         .permitAll()
+
                         .anyRequest()
                         .authenticated())
                 .build();

@@ -23,6 +23,7 @@ public class AppConfiguration {
         return username -> userRepository.findByEmail(username).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 
+
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
