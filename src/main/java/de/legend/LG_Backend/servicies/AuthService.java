@@ -20,14 +20,11 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDto signup(UserDto dto) {
+    public User signup(UserDto dto) {
         User user = new User(
                 dto.email(),
                 passwordEncoder.encode(dto.password()));
-
-        userRepository.save(user);
-        return new UserDto(user.getUsername(), user.getPassword());
-
+        return userRepository.save(user);
     }
 
     public String getJwt(Authentication authentication) {

@@ -48,4 +48,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleNoSuchElementException(NoSuchElementException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    @ExceptionHandler(Exception.class)
+    public void handleExpection(Exception e){
+        e.printStackTrace();
+    }
 }

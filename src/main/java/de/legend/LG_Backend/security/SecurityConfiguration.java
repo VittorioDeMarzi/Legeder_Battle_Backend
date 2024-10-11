@@ -76,7 +76,7 @@ public class SecurityConfiguration {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, "/api/v1/legender_battle/auth/**")
-                        .permitAll()
+                        .authenticated()
                         .anyRequest()
                         .authenticated())
                 .build();
