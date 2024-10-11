@@ -2,9 +2,9 @@ package de.legend.LG_Backend.controllers;
 
 import de.legend.LG_Backend.dtos.TeamDtos.TeamRequestDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
-import de.legend.LG_Backend.dtos.userDtos.UserIdDto;
 import de.legend.LG_Backend.servicies.TeamService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,33 +19,33 @@ public class TeamController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> newTeam(@RequestBody @Validated TeamRequestDto dto){
-        teamService.addNewTeam(dto);
+    public ResponseEntity<Void> newTeam(@RequestBody @Validated TeamRequestDto dto, Authentication authentication){
+        teamService.addNewTeam(dto, authentication);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping()
-    public TeamResponseDto getTeamData(@RequestBody @Validated UserIdDto dto){
+    public TeamResponseDto getTeamData(@RequestBody Authentication authentication){
         try {
-            return teamService.getTeamData(dto.userId());
+            return teamService.getTeamData(authentication);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @DeleteMapping
-    public void deleteTeam(@RequestBody @Validated UserIdDto dto){
+    public void deleteTeam(Authentication authentication){
         try {
-            teamService.deleteTeam(dto.userId());
+            teamService.deleteTeam(authentication);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @PutMapping
-    public void updateTeamName(TeamRequestDto dto){
+    public void updateTeamName(TeamRequestDto dto, Authentication authentication){
         try {
-            teamService.updateTeamName(dto);
+            teamService.updateTeamName(dto, authentication);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

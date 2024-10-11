@@ -5,6 +5,7 @@ import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
 import de.legend.LG_Backend.entities.Team;
 import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -18,26 +19,27 @@ public class TeamService {
         this.userRepository = userRepository;
     }
 
-    public void addNewTeam(TeamRequestDto dto){
-        User user = getUserById(dto.userId());
+    public void addNewTeam(TeamRequestDto dto, Authentication authentication){
+        User user = getUser(authentication);
         Team team = new Team(dto.teamName());
         user.setTeam(team);
         userRepository.save(user);
     }
 
-    public void updateTeamName(TeamRequestDto dto){
-        User user = getUserById(dto.userId());
+    public void updateTeamName(TeamRequestDto dto, Authentication authentication){
+        User user = getUser(authentication);
         Team team = user.getTeam();
         team.setTeamName(dto.teamName());
         userRepository.save(user);
     }
 
-    public User getUserById(Long id){
-        return userRepository.findById(id).orElseThrow(()-> new NoSuchElementException("User not found"));
+    public User getUser(Authentication authentication){
+        String userName = authentication.getName();
+        return userRepository.findByEmail(userName).orElseThrow(()-> new NoSuchElementException("User not found"));
     }
 
-    public void deleteTeam(long id){
-        User user = getUserById(id);
+    public void deleteTeam(Authentication authentication){
+        User user = getUser(authentication);
         Team team = user.getTeam();
         team.setTeamName("");
         team.setLoses(0);
@@ -45,8 +47,8 @@ public class TeamService {
         userRepository.save(user);
     }
 
-    public TeamResponseDto getTeamData(Long id){
-        User user = getUserById(id);
+    public TeamResponseDto getTeamData(Authentication authentication){
+        User user = getUser(authentication);
         Team team = user.getTeam();
         return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
     }
