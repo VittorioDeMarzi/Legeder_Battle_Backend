@@ -75,8 +75,8 @@ public class SecurityConfiguration {
                 .oauth2ResourceServer(auth -> auth.jwt((Customizer.withDefaults())))
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(HttpMethod.POST, "/api/v1/legender_battle/auth/**")
-                        .authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/legender_battle/auth/signup")
+                        .permitAll()
                         .anyRequest()
                         .authenticated())
                 .build();

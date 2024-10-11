@@ -1,10 +1,9 @@
-package de.legend.LG_Backend.dtos;
+package de.legend.LG_Backend.dtos.userDtos;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-public record UserDto(
+public record newUserRequestDto(
         @NotBlank(message = "Email cannot be empty")
         @Email(message = "Invalid username format")
         String email,

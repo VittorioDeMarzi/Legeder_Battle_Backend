@@ -1,6 +1,6 @@
 package de.legend.LG_Backend.servicies;
 
-import de.legend.LG_Backend.dtos.UserDto;
+import de.legend.LG_Backend.dtos.userDtos.newUserRequestDto;
 import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -20,7 +20,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User signup(UserDto dto) {
+    public User signup(newUserRequestDto dto) {
         User user = new User(
                 dto.email(),
                 passwordEncoder.encode(dto.password()));

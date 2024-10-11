@@ -13,6 +13,9 @@ public class Team {
     private long id;
 
     @Column
+    private String teamName;
+
+    @Column
     @Value("0")
     private int wins;
 
@@ -32,6 +35,13 @@ public class Team {
     
     @Transient
     private int heroListSize;
+
+    public Team() {
+    }
+
+    public Team(String teamName) {
+        this.teamName = teamName;
+    }
 
     public long getId() {
         return id;
@@ -83,5 +93,13 @@ public class Team {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }
