@@ -27,9 +27,6 @@ public class Team {
     @Value("false")
     private boolean isPublic;
 
-    @OneToOne
-    private User user;
-
     @OneToMany
     private List<Hero> heroes;
     
@@ -87,13 +84,6 @@ public class Team {
         return heroes.size();
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getTeamName() {
         return teamName;
