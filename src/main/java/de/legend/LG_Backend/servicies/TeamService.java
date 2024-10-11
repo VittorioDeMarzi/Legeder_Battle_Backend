@@ -2,7 +2,6 @@ package de.legend.LG_Backend.servicies;
 
 import de.legend.LG_Backend.dtos.TeamDtos.TeamRequestDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
-import de.legend.LG_Backend.dtos.userDtos.UserIdDto;
 import de.legend.LG_Backend.entities.Team;
 import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.repository.UserRepository;
@@ -20,14 +19,14 @@ public class TeamService {
     }
 
     public void addNewTeam(TeamRequestDto dto){
-        User user = getUserById(dto.user_id());
+        User user = getUserById(dto.userId());
         Team team = new Team(dto.teamName());
         user.setTeam(team);
         userRepository.save(user);
     }
 
     public void updateTeamName(TeamRequestDto dto){
-        User user = getUserById(dto.user_id());
+        User user = getUserById(dto.userId());
         Team team = user.getTeam();
         team.setTeamName(dto.teamName());
         userRepository.save(user);

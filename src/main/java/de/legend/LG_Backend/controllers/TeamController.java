@@ -25,9 +25,9 @@ public class TeamController {
     }
 
     @GetMapping()
-    public TeamResponseDto getTeam(@RequestBody @Validated UserIdDto dto){
+    public TeamResponseDto getTeamData(@RequestBody @Validated UserIdDto dto){
         try {
-            return teamService.getTeamData(dto.user_id());
+            return teamService.getTeamData(dto.userId());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +36,7 @@ public class TeamController {
     @DeleteMapping
     public void deleteTeam(@RequestBody @Validated UserIdDto dto){
         try {
-            teamService.deleteTeam(dto.user_id());
+            teamService.deleteTeam(dto.userId());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
