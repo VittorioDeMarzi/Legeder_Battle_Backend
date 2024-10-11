@@ -24,13 +24,14 @@ public class TeamService {
     }
 
     @Transactional
-    public void addNewTeam(TeamRequestDto dto, Authentication authentication) {
+    public TeamResponseDto addNewTeam(TeamRequestDto dto, Authentication authentication) {
         User user = getUser(authentication);
         Team team = new Team(dto.teamName());
         team.setUser(user);
         user.setTeam(team);
         teamRepository.save(team);
         userRepository.save(user);
+        return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
     }
 
     public void updateTeamName(TeamRequestDto dto, Authentication authentication){

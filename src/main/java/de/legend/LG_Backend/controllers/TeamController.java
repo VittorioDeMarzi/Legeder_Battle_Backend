@@ -23,7 +23,7 @@ public class TeamController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> newTeam(@RequestBody @Validated TeamRequestDto dto, Authentication authentication) {
+    public ResponseEntity<TeamResponseDto> newTeam(@RequestBody @Validated TeamRequestDto dto, Authentication authentication) {
         teamService.addNewTeam(dto, authentication);
         return ResponseEntity.ok().build();
     }

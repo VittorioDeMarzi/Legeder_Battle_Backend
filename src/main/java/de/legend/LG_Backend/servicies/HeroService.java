@@ -66,4 +66,9 @@ public class HeroService {
             return new HeroResponseDto(hero.getName(), hero.getPowerLevel(), hero.getHeroType().getName());
     }
 
+    public void setTaken(HeroIdDto dto){
+        Hero hero  = heroRepository.findById(dto.heroID()).orElseThrow(()-> new NoSuchElementException("Hero not found"));
+        hero.setTaken(!hero.isTaken());
+    }
+
 }
