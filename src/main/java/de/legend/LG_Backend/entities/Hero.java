@@ -21,7 +21,7 @@ public class Hero {
     @Value("false")
     private boolean isTaken;
 
-    @OneToOne
+    @ManyToOne
     private HeroType heroType;
 
     @ManyToOne
@@ -65,5 +65,13 @@ public class Hero {
 
     public void setHeroType(HeroType heroType) {
         this.heroType = heroType;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 }
