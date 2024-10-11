@@ -1,7 +1,6 @@
 package de.legend.LG_Backend.security;
 
 import de.legend.LG_Backend.repository.UserRepository;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,10 +17,10 @@ public class AppConfiguration {
         this.userRepository = userRepository;
     }
 
+    @Bean
     UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username).orElseThrow(() -> new NoSuchElementException("User not found"));
+        return email -> userRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("User not found"));
     }
-
 
     @Bean
     BCryptPasswordEncoder passwordEncoder() {
