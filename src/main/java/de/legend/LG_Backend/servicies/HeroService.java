@@ -48,15 +48,15 @@ public class HeroService {
     public List<HeroResponseDto> getAllHeroes(Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
+        Team team = user.getTeam();
+        List<Hero> heroes = heroRepository.findAllByTeam(team);
 
-//        List<Hero> heroes = heroRepository.findAllByUser(user);
-
-//        return heroes.stream()
-//                .map(hero -> new HeroResponseDto(
-//                        hero.getName(),
-//                        hero.getPowerLevel(),
-//                        hero.getHeroType().getName()))
-//                .toList();
+        return heroes.stream()
+                .map(hero -> new HeroResponseDto(
+                        hero.getName(),
+                        hero.getPowerLevel(),
+                        hero.getHeroType().getName()))
+                .toList();
     }
 
     public HeroResponseDto getHero(HeroIdDto dto){
