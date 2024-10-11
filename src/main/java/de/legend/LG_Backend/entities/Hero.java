@@ -24,7 +24,8 @@ public class Hero {
     @OneToOne
     private HeroType heroType;
 
-    @Many
+    @ManyToOne
+    private Team team;
 
     public long getId() {
         return id;
