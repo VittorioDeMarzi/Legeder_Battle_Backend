@@ -1,7 +1,7 @@
 package de.legend.LG_Backend.controllers;
 
 import de.legend.LG_Backend.dtos.JwtDto;
-import de.legend.LG_Backend.dtos.UserDto;
+import de.legend.LG_Backend.dtos.userDtos.newUserRequestDto;
 import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.servicies.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup (@RequestBody @Validated UserDto dto) {
+    public ResponseEntity<User> signup (@RequestBody @Validated newUserRequestDto dto) {
         return ResponseEntity.ok(authService.signup(dto));
     }
 

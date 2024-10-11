@@ -1,6 +1,8 @@
 package de.legend.LG_Backend.servicies;
 
 import de.legend.LG_Backend.dtos.TeamDtos.TeamRequestDto;
+import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
+import de.legend.LG_Backend.dtos.userDtos.UserIdDto;
 import de.legend.LG_Backend.entities.Team;
 import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.repository.UserRepository;
@@ -35,12 +37,18 @@ public class TeamService {
         return userRepository.findById(id).orElseThrow(()-> new NoSuchElementException("User not found"));
     }
 
-    public void deleteTeam(Long id){
+    public void deleteTeam(long id){
         User user = getUserById(id);
         Team team = user.getTeam();
         team.setTeamName("");
         team.setLoses(0);
         team.setWins(0);
         userRepository.save(user);
+    }
+
+    public TeamResponseDto getTeamData(Long id){
+        User user = getUserById(id);
+        Team team = user.getTeam();
+        return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
     }
 }
