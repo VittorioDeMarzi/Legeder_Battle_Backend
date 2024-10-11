@@ -1,5 +1,6 @@
 package de.legend.LG_Backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -11,6 +12,9 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @OneToOne
+    private User user;
 
     @Column
     private String teamName;
@@ -27,7 +31,8 @@ public class Team {
     @Value("false")
     private boolean isPublic;
 
-    @OneToMany
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE})
+    @JsonIgnore
     private List<Hero> heroes;
     
     @Transient
@@ -91,5 +96,13 @@ public class Team {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

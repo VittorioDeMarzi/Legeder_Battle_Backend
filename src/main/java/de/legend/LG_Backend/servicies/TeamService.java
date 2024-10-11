@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
 
 @Service
 public class TeamService {
@@ -25,17 +24,24 @@ public class TeamService {
     }
 
     @Transactional
-    public void addNewTeam(TeamRequestDto dto, Authentication authentication){
+    public void addNewTeam(TeamRequestDto dto, Authentication authentication) {
         User user = getUser(authentication);
         Team team = new Team(dto.teamName());
+        team.setUser(user);
+        user.setTeam(team);
         teamRepository.save(team);
+        userRepository.save(user);
     }
 
     public void updateTeamName(TeamRequestDto dto, Authentication authentication){
         User user = getUser(authentication);
-        Team team = user.getTeam();
-        team.setTeamName(dto.teamName());
-        teamRepository.save(team);
+        try {
+            Team team = user.getTeam();
+            team.setTeamName(dto.teamName());
+            teamRepository.save(team);
+        } catch (NullPointerException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public User getUser(Authentication authentication){
@@ -53,7 +59,11 @@ public class TeamService {
 
     public TeamResponseDto getTeamData(Authentication authentication){
         User user = getUser(authentication);
-        Team team = user.getTeam();
-        return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
+        try {
+            Team team = user.getTeam();
+            return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
+        } catch (Exception e) {
+            throw new NullPointerException();
+        }
     }
 }

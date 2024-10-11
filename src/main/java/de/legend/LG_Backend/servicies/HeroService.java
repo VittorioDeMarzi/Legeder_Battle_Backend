@@ -29,7 +29,7 @@ public class HeroService {
         this.heroTypeRepository = heroTypeRepository;
     }
 
-    public Hero createNewHero(HeroRequestDto heroRequestDto, Authentication authentication) {
+    public HeroResponseDto createNewHero(HeroRequestDto heroRequestDto, Authentication authentication) {
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(() -> new NoSuchElementException("User not found"));
         Hero hero = new Hero();
         Team team = user.getTeam();
@@ -37,8 +37,10 @@ public class HeroService {
         hero.setHeroType(heroType);
         hero.setName(heroRequestDto.name());
         hero.setPowerLevel(randomLevelPower(heroType.getMinPower(), heroType.getMaxPower()));
+        hero.setTeam(team);
         team.getHeroes().add(hero);
-        return heroRepository.save(hero);
+        heroRepository.save(hero);
+        return new HeroResponseDto(hero.getName(), hero.getPowerLevel(), hero.getHeroType().getName());
     }
 
     public int randomLevelPower(int min, int max) {

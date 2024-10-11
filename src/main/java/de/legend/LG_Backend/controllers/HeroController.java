@@ -23,7 +23,7 @@ public class HeroController {
     }
 
     @PostMapping
-    public ResponseEntity<Hero> createNewHero(@RequestBody @Validated HeroRequestDto dto, Authentication authentication){
+    public ResponseEntity<HeroResponseDto> createNewHero(@RequestBody @Validated HeroRequestDto dto, Authentication authentication){
         return ResponseEntity.ok(heroService.createNewHero(dto, authentication));
     }
 
