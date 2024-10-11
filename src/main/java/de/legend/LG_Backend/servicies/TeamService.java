@@ -4,8 +4,11 @@ import de.legend.LG_Backend.dtos.TeamDtos.TeamRequestDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
 import de.legend.LG_Backend.entities.Team;
 import de.legend.LG_Backend.entities.User;
+import de.legend.LG_Backend.repository.TeamRepository;
 import de.legend.LG_Backend.repository.UserRepository;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
 
@@ -13,40 +16,42 @@ import java.util.NoSuchElementException;
 public class TeamService {
 
     final UserRepository userRepository;
+    final TeamRepository teamRepository;
 
-    public TeamService(UserRepository userRepository) {
+    public TeamService(UserRepository userRepository, TeamRepository teamRepository) {
         this.userRepository = userRepository;
+        this.teamRepository = teamRepository;
     }
 
-    public void addNewTeam(TeamRequestDto dto){
-        User user = getUserById(dto.userId());
+    @Transactional
+    public void addNewTeam(TeamRequestDto dto, Authentication authentication){
+        User user = getUser(authentication);
         Team team = new Team(dto.teamName());
-        user.setTeam(team);
-        userRepository.save(user);
+        teamRepository.save(team);
     }
 
-    public void updateTeamName(TeamRequestDto dto){
-        User user = getUserById(dto.userId());
+    public void updateTeamName(TeamRequestDto dto, Authentication authentication){
+        User user = getUser(authentication);
         Team team = user.getTeam();
         team.setTeamName(dto.teamName());
-        userRepository.save(user);
+        teamRepository.save(team);
     }
 
-    public User getUserById(Long id){
-        return userRepository.findById(id).orElseThrow(()-> new NoSuchElementException("User not found"));
+    public User getUser(Authentication authentication){
+        return userRepository.findByEmail(authentication.getName()).orElseThrow(()-> new NoSuchElementException("User not found"));
     }
 
-    public void deleteTeam(long id){
-        User user = getUserById(id);
+    public void deleteTeam(Authentication authentication){
+        User user = getUser(authentication);
         Team team = user.getTeam();
         team.setTeamName("");
         team.setLoses(0);
         team.setWins(0);
-        userRepository.save(user);
+        teamRepository.save(team);
     }
 
-    public TeamResponseDto getTeamData(Long id){
-        User user = getUserById(id);
+    public TeamResponseDto getTeamData(Authentication authentication){
+        User user = getUser(authentication);
         Team team = user.getTeam();
         return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
     }
