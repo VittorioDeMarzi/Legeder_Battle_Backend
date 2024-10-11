@@ -25,12 +25,8 @@ public class TeamController {
     }
 
     @GetMapping()
-    public TeamResponseDto getTeamData(@RequestBody Authentication authentication){
-        try {
-            return teamService.getTeamData(authentication);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<TeamResponseDto> getTeamData(@RequestBody Authentication authentication){
+        return ResponseEntity.ok(teamService.getTeamData(authentication));
     }
 
     @DeleteMapping

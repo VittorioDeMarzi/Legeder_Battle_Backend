@@ -7,6 +7,7 @@ import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.repository.TeamRepository;
 import de.legend.LG_Backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,7 @@ public class TeamService {
     }
 
     public User getUser(Authentication authentication){
-        return userRepository.findByEmail(authentication.getName()).orElseThrow(()-> new NoSuchElementException("User not found"));
+        return userRepository.findByEmail(authentication.getName()).orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 
     public void deleteTeam(Authentication authentication){

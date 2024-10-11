@@ -1,6 +1,7 @@
 package de.legend.LG_Backend.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Value;
 
 @Entity
@@ -22,6 +23,8 @@ public class Hero {
 
     @OneToOne
     private HeroType heroType;
+
+    @Many
 
     public long getId() {
         return id;
