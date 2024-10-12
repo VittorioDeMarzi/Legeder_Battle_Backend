@@ -20,6 +20,18 @@ public class HeroType {
     @Column
     private int maxPower;
 
+    @Column
+    private double blockQuote;
+
+    @Column
+    private double attackFactor;
+
+    @Column
+    private double health;
+
+    @Transient
+    private double damage;
+
     public long getId() {
         return id;
     }
@@ -52,4 +64,36 @@ public class HeroType {
         this.maxPower = maxPower;
     }
 
+    public double getBlockQuote() {
+        return blockQuote;
+    }
+
+    public void setBlockQuote(double blockQuote) {
+        this.blockQuote = blockQuote;
+    }
+
+    public double getAttackFactor() {
+        return attackFactor;
+    }
+
+    public void setAttackFactor(double attackFactor) {
+        this.attackFactor = attackFactor;
+    }
+
+    public double getDamage() {
+        if (minPower == 0 || maxPower == 0) return 0;
+        return maxPower - minPower;
+    }
+
+    public double getHealth() {
+        return health;
+    }
+
+    public void setHealth(double health) {
+        this.health = health;
+    }
+
+    public void setDamage(double damage) {
+        this.damage = damage;
+    }
 }
