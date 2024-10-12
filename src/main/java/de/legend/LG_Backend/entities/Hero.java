@@ -1,7 +1,6 @@
 package de.legend.LG_Backend.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Value;
 
 @Entity
@@ -73,5 +72,18 @@ public class Hero {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public double calculateBlockFactor() {
+        double blockQuote = this.heroType.getBlockQuote();
+        double level = this.powerLevel;
+        double blockFactor = (level / 100) + blockQuote;
+        return Math.min(blockFactor, 1.0);
+    }
+
+    public double calculateMaxDamage() {
+        double level = this.powerLevel;
+        double damage = this.heroType.getDamage();
+        return (level * this.heroType.getAttackFactor()) + damage;
     }
 }
