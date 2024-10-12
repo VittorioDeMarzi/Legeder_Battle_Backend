@@ -34,6 +34,10 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE})
     @JsonIgnore
     private List<Hero> heroes;
+
+    @Column
+    @Value("0")
+    private int matchCounter;
     
     @Transient
     private int heroListSize;
@@ -105,4 +109,13 @@ public class Team {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public int getMatchCounter() {
+        return matchCounter;
+    }
+
+    public void setMatchCounter(int matchCounter) {
+        this.matchCounter = matchCounter;
+    }
+
 }
