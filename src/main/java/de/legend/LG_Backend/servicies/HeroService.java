@@ -69,7 +69,7 @@ public class HeroService {
         heroRepository.save(hero);
     }
 
-    public List<HeroResponseDto> getAllFromOneHeroTypeAndNotTaken(Long heroTypeId, Authentication authentication) {
+    public List<HeroResponseDto> getAllOfOneHeroTypeAndNotTaken(Long heroTypeId, Authentication authentication) {
         Team team = getTeam(authentication);
         List<Hero> heroes = heroRepository.findAllByHeroTypeIdAndTeamAndIsTakenFalse(heroTypeId, team);
         return getHeroResponseDto(heroes);

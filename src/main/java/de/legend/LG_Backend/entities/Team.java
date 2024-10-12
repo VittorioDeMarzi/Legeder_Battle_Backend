@@ -42,6 +42,16 @@ public class Team {
     @Transient
     private int heroListSize;
 
+    @Transient
+    private List<Hero> takenHeroes;
+
+    public List<Hero> getTakenHeroes(){
+        if(takenHeroes == null) {
+            takenHeroes = heroes.stream().filter(Hero::isTaken).toList();
+        }
+        return takenHeroes;
+    }
+
     public Team() {
     }
 
@@ -118,4 +128,8 @@ public class Team {
         this.matchCounter = matchCounter;
     }
 
+
+    public void setTakenHeroes(List<Hero> takenHeroes) {
+        this.takenHeroes = takenHeroes;
+    }
 }
