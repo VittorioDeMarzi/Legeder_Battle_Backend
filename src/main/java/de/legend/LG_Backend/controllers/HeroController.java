@@ -3,6 +3,7 @@ package de.legend.LG_Backend.controllers;
 import de.legend.LG_Backend.dtos.HeroDto.HeroIdDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroRequestDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroResponseDto;
+import de.legend.LG_Backend.dtos.HeroTypeDtos.HeroTypeRequestDto;
 import de.legend.LG_Backend.servicies.HeroService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -31,14 +32,19 @@ public class HeroController {
         return ResponseEntity.ok(heroService.getAllHeroes(authentication));
     }
 
-    @GetMapping
-    public ResponseEntity<HeroResponseDto> getHero(@RequestBody @Validated HeroIdDto dto){
-        return ResponseEntity.ok(heroService.getHero(dto));
+    @GetMapping("/getHero")
+    public ResponseEntity<HeroResponseDto> getHero(@RequestBody @Validated HeroIdDto dto, Authentication authentication){
+        return ResponseEntity.ok(heroService.getHero(dto, authentication));
     }
 
-    @PostMapping("/taken")
-    public ResponseEntity<Void> setTaken(@RequestBody @Validated HeroIdDto dto){
-        heroService.setTaken(dto);
+    @PutMapping("/taken")
+    public ResponseEntity<Void> setTaken(@RequestBody @Validated HeroIdDto dto, Authentication authentication){
+        heroService.setTaken(dto, authentication);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/getHeroList")
+    public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestBody @Validated HeroTypeRequestDto dto, Authentication authentication){
+        return ResponseEntity.ok(heroService.getAllFromOneHeroTypeAndNotTaken(dto.heroTypeId(), authentication));
     }
 }
