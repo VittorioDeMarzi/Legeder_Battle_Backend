@@ -4,8 +4,8 @@ public record FightHistoryResponseDto(
         long fightHistoryId,
         int pointsAttacker,
         int pointsOpponent,
-        String battleMessage
-
+        String battleMessage,
+        FightLogDto[] logs
 
 ) {
 }
