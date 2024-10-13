@@ -53,4 +53,9 @@ public class HeroController {
         heroService.setFightTeam(dto, authentication);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/getFightTeam")
+    public ResponseEntity<List<HeroResponseDto>> getFightTeam(Authentication authentication){
+        return ResponseEntity.ok(heroService.getFightTeam(authentication));
+    }
 }

@@ -90,5 +90,16 @@ public class TeamService {
                 .toList();
     }
 
-
+    public List<TeamResponseDto> getAllTeamsWithoutOwnTeam(Authentication authentication){
+        long userId = getUser(authentication).getId();
+        List<Team> teamList = teamRepository.findAll();
+        return teamList.stream()
+                .filter(team -> team.getId() != userId && team.isPublic())
+                .map(team -> new TeamResponseDto(
+                        team.getId(),
+                        team.getTeamName(),
+                        team.getWins(),
+                        team.getLoses()
+                )).toList();
+    }
 }
