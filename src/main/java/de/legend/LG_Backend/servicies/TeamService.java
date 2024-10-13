@@ -28,15 +28,16 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    @Transactional
+
     public TeamResponseDto addNewTeam(TeamRequestDto dto, Authentication authentication) {
         User user = getUser(authentication);
         Team team = new Team(dto.teamName());
         team.setUser(user);
         user.setTeam(team);
+        TeamResponseDto responseDto = new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
         teamRepository.save(team);
         userRepository.save(user);
-        return new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
+        return responseDto;
     }
 
     public void updateTeamName(TeamRequestDto dto, Authentication authentication){
@@ -89,5 +90,16 @@ public class TeamService {
                 .toList();
     }
 
+//    public List<TeamResponseDto> getAllTeamWithoutOwnTeam(Authentication authentication){
+//        long userId = getUser(authentication).getId();
+//        List<Team> teamList = teamRepository.findAll();
+//        teamList.stream().filter(team -> {})
+//        try {
+//            Team team = user.getTeam();
+//            return new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
+//        } catch (Exception e) {
+//            throw new NullPointerException();
+//        }
+//    }
 
 }

@@ -24,8 +24,7 @@ public class TeamController {
 
     @PostMapping()
     public ResponseEntity<TeamResponseDto> newTeam(@RequestBody @Validated TeamRequestDto dto, Authentication authentication) {
-        teamService.addNewTeam(dto, authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(teamService.addNewTeam(dto, authentication));
     }
 
     @GetMapping()

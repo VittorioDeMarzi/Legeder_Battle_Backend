@@ -78,7 +78,7 @@ public class HeroService {
         return getHeroResponseDto(heroes);
     }
 
-    private static List<HeroResponseDto> getHeroResponseDto(List<Hero> heroes) {
+    public List<HeroResponseDto> getHeroResponseDto(List<Hero> heroes) {
         return heroes.stream()
                 .map(hero -> new HeroResponseDto(
                         hero.getId(),
