@@ -1,5 +1,6 @@
 package de.legend.LG_Backend.servicies;
 
+import de.legend.LG_Backend.dtos.FightHistory.FightHistoryResponseDto;
 import de.legend.LG_Backend.entities.*;
 import de.legend.LG_Backend.repository.*;
 import org.springframework.security.core.Authentication;
@@ -38,7 +39,8 @@ public class FightService {
     }
 
     @Transactional
-    public void startFight(Authentication authentication, long opponentId) {
+    public FightHistoryResponseDto startFight(Authentication authentication, long opponentId) {
+        FightHistoryResponseDto dto = null;
         User user1 = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
         User user2 = userRepository.findById(opponentId).orElseThrow(() -> new NoSuchElementException("User not found"));
@@ -102,8 +104,11 @@ public class FightService {
             fightHistory.setBattleName("Team: " + teamUser1.getTeamName() + " fordert Team: "
                     + teamUser2.getTeamName() + " heraus! Nach einem harten aber fairen Kampf hat Team: "
                     + winnerTeam+ " gewonnen!");
+            dto = new FightHistoryResponseDto(fightHistory.getId(), fightHistory.getAttackerPoints(), fightHistory.getOpponentPoints(), fightHistory.getBattleName());
             fightHistoryRepository.save(fightHistory);
+
         }
+        return dto;
     }
 
 
