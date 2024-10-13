@@ -26,6 +26,9 @@ public class Hero {
     @ManyToOne
     private Team team;
 
+    public Hero() {
+    }
+
     public long getId() {
         return id;
     }
