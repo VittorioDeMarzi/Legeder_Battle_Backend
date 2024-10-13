@@ -3,6 +3,7 @@ package de.legend.LG_Backend.servicies;
 import de.legend.LG_Backend.dtos.HeroDto.HeroResponseDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamRequestDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
+import de.legend.LG_Backend.dtos.TeamDtos.TeamWithUserIdResponseDto;
 import de.legend.LG_Backend.entities.Hero;
 import de.legend.LG_Backend.entities.Team;
 import de.legend.LG_Backend.entities.User;
@@ -90,12 +91,13 @@ public class TeamService {
                 .toList();
     }
 
-    public List<TeamResponseDto> getAllTeamsWithoutOwnTeam(Authentication authentication){
+    public List<TeamWithUserIdResponseDto> getAllTeamsWithoutOwnTeam(Authentication authentication) {
         long userId = getUser(authentication).getId();
         List<Team> teamList = teamRepository.findAll();
         return teamList.stream()
-                .filter(team -> team.getId() != userId && team.isPublic())
-                .map(team -> new TeamResponseDto(
+                .filter(team -> team.getUser().getId() != userId && team.isPublic())
+                .map(team -> new TeamWithUserIdResponseDto(
+                        userId,
                         team.getId(),
                         team.getTeamName(),
                         team.getWins(),
