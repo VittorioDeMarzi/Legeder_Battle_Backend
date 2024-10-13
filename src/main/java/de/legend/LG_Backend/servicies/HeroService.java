@@ -10,6 +10,7 @@ import de.legend.LG_Backend.entities.Team;
 import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.repository.HeroRepository;
 import de.legend.LG_Backend.repository.HeroTypeRepository;
+import de.legend.LG_Backend.repository.TeamRepository;
 import de.legend.LG_Backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -23,11 +24,13 @@ public class HeroService {
     final HeroRepository heroRepository;
     final UserRepository userRepository;
     final HeroTypeRepository heroTypeRepository;
+    final TeamRepository teamRepository;
 
-    public HeroService(HeroRepository heroRepository, UserRepository userRepository, HeroTypeRepository heroTypeRepository) {
+    public HeroService(HeroRepository heroRepository, UserRepository userRepository, HeroTypeRepository heroTypeRepository, TeamRepository teamRepository) {
         this.heroRepository = heroRepository;
         this.userRepository = userRepository;
         this.heroTypeRepository = heroTypeRepository;
+        this.teamRepository = teamRepository;
     }
 
     public HeroResponseDto createNewHero(HeroRequestDto heroRequestDto, Authentication authentication) {
@@ -111,6 +114,30 @@ public class HeroService {
             System.out.println("Set hero to taken: " + hero.getName());
             heroRepository.save(hero);
         });
+
+        //prüfen ob das FightTeam vollständig ist
+        isFightTeamComplete(authentication);
+
+    }
+
+    public void isFightTeamComplete(Authentication authentication) {
+        Team team = getTeam(authentication);
+        team.setPublic(checkFightTeamIsTaken(team));
+        System.out.println(checkFightTeamIsTaken(team));
+        teamRepository.save(team);
+    }
+
+    public boolean checkFightTeamIsTaken(Team team) {
+        List<Hero> heroes = heroRepository.findAllByTeam(team);
+        long rookies = heroes.stream().filter(hero -> hero.getHeroType().getId() == 1).count();
+        long normals = heroes.stream().filter(hero -> hero.getHeroType().getId() == 2).count();
+        long veterans = heroes.stream().filter(hero -> hero.getHeroType().getId() == 3).count();
+        long legends = heroes.stream().filter(hero -> hero.getHeroType().getId() == 4).count();
+
+        return (rookies == 1 && normals == 2 && veterans == 1 && legends == 1);
+
+
+
     }
 
 }
