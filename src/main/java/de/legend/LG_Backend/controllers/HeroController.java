@@ -33,8 +33,8 @@ public class HeroController {
     }
 
     @GetMapping("/getHero")
-    public ResponseEntity<HeroResponseDto> getHero(@RequestBody @Validated HeroIdDto dto, Authentication authentication){
-        return ResponseEntity.ok(heroService.getHero(dto, authentication));
+    public ResponseEntity<HeroResponseDto> getHero(@RequestParam Long heroId, Authentication authentication){
+        return ResponseEntity.ok(heroService.getHero(heroId, authentication));
     }
 
     @PutMapping("/taken")
@@ -44,7 +44,7 @@ public class HeroController {
     }
 
     @GetMapping("/getHeroList")
-    public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestBody @Validated HeroTypeRequestDto dto, Authentication authentication){
-        return ResponseEntity.ok(heroService.getAllOfOneHeroTypeAndNotTaken(dto.heroTypeId(), authentication));
+    public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestParam Long heroId, Authentication authentication){
+        return ResponseEntity.ok(heroService.getAllOfOneHeroTypeAndNotTaken(heroId, authentication));
     }
 }

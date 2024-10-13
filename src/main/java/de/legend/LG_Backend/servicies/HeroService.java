@@ -55,9 +55,9 @@ public class HeroService {
     }
 
 
-    public HeroResponseDto getHero(HeroIdDto dto, Authentication authentication) {
+    public HeroResponseDto getHero(long heroId, Authentication authentication) {
         Team team = getTeam(authentication);
-        Hero hero = heroRepository.findByTeamAndId(team, dto.heroId()).orElseThrow(() -> new NoSuchElementException("Hero not found"));
+        Hero hero = heroRepository.findByTeamAndId(team, heroId).orElseThrow(() -> new NoSuchElementException("Hero not found"));
         return new HeroResponseDto(hero.getName(), hero.getPowerLevel(), hero.getHeroType().getName(), hero.isTaken());
     }
 
