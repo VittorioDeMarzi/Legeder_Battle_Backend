@@ -1,5 +1,6 @@
 package de.legend.LG_Backend.controllers;
 
+import de.legend.LG_Backend.dtos.HeroDto.FightTeamRequestDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroIdDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroRequestDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroResponseDto;
@@ -48,9 +49,9 @@ public class HeroController {
         return ResponseEntity.ok(heroService.getAllOfOneHeroTypeAndNotTaken(heroId, authentication));
     }
 
-    @PostMapping("/setFightTeam")
-    public ResponseEntity<Void> setFightTeam(@RequestBody @Validated HeroIdDto dto, Authentication authentication){
-        heroService.setTaken(dto, authentication);
+    @PutMapping("/setFightTeam")
+    public ResponseEntity<Void> setFightTeam(@RequestBody @Validated FightTeamRequestDto dto, Authentication authentication){
+        heroService.setFightTeam(dto, authentication);
         return ResponseEntity.ok().build();
     }
 }

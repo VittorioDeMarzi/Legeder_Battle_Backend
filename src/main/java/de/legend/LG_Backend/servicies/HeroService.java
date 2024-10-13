@@ -1,5 +1,6 @@
 package de.legend.LG_Backend.servicies;
 
+import de.legend.LG_Backend.dtos.HeroDto.FightTeamRequestDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroIdDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroRequestDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroResponseDto;
@@ -13,8 +14,10 @@ import de.legend.LG_Backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class HeroService {
@@ -91,4 +94,26 @@ public class HeroService {
         if (team == null) throw new NoSuchElementException("Team not founded");
         return team;
     }
+
+    public void setFightTeam(FightTeamRequestDto dto, Authentication authentication) {
+        long teamId = getTeam(authentication).getId();
+
+        heroRepository.findAllByTeamId(teamId).forEach(hero -> {
+            hero.setTaken(false);
+            heroRepository.save(hero);
+        });
+
+        List<Long> heroIds = List.of(dto.hero1Id(), dto.hero2Id(), dto.hero3Id(), dto.hero4Id(), dto.hero5Id());
+
+        heroIds.forEach(heroId -> {
+            Hero hero = heroRepository.findById(heroId)
+                    .orElseThrow(() -> new NoSuchElementException("Hero with ID " + heroId + " not found"));
+
+            hero.setTaken(true);
+            System.out.println("Set hero to taken: " + hero.getName());
+            heroRepository.save(hero);
+        });
+    }
+
 }
+
