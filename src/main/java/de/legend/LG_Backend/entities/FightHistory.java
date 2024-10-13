@@ -15,9 +15,6 @@ public class FightHistory {
     @Column
     private String battleName;
 
-   @ManyToOne
-    private User attacker;
-
     @ManyToOne
     private User opponent;
 

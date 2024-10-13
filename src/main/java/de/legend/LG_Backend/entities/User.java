@@ -34,6 +34,9 @@ public class User implements UserDetails {
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE})
     private Team team;
 
+    @OneToMany(mappedBy = "opponent")
+    private List<FightHistory> fightHistories;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -77,5 +80,13 @@ public class User implements UserDetails {
 
     public void setTeam(Team team) {
         this.team = team;
+    }
+
+    public List<FightHistory> getFightHistories() {
+        return fightHistories;
+    }
+
+    public void setFightHistories(List<FightHistory> fightHistories) {
+        this.fightHistories = fightHistories;
     }
 }

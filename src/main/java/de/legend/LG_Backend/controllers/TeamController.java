@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -24,8 +25,7 @@ public class TeamController {
 
     @PostMapping()
     public ResponseEntity<TeamResponseDto> newTeam(@RequestBody @Validated TeamRequestDto dto, Authentication authentication) {
-        teamService.addNewTeam(dto, authentication);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(teamService.addNewTeam(dto, authentication));
     }
 
     @GetMapping()
@@ -56,6 +56,9 @@ public class TeamController {
         }
     }
 
-//    @PutMapping
-//    public void setTeamPublic(Authentication a)
+    @GetMapping("/anotherTeams")
+    public ResponseEntity<List<TeamResponseDto>> getAllTeams(Authentication authentication){
+        return ResponseEntity.ok(teamService.getAllTeamsWithoutOwnTeam(authentication));
+    }
+
 }

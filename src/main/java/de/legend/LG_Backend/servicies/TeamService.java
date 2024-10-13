@@ -28,15 +28,16 @@ public class TeamService {
         this.teamRepository = teamRepository;
     }
 
-    @Transactional
+
     public TeamResponseDto addNewTeam(TeamRequestDto dto, Authentication authentication) {
         User user = getUser(authentication);
         Team team = new Team(dto.teamName());
         team.setUser(user);
         user.setTeam(team);
+        TeamResponseDto responseDto = new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
         teamRepository.save(team);
         userRepository.save(user);
-        return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
+        return responseDto;
     }
 
     public void updateTeamName(TeamRequestDto dto, Authentication authentication){
@@ -67,7 +68,7 @@ public class TeamService {
         User user = getUser(authentication);
         try {
             Team team = user.getTeam();
-            return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
+            return new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
         } catch (Exception e) {
             throw new NullPointerException();
         }
@@ -81,6 +82,7 @@ public class TeamService {
         List<Hero> heroList = team.getTakenHeroes();
         return heroList.stream()
                 .map(hero -> new HeroResponseDto(
+                        hero.getId(),
                         hero.getName(),
                         hero.getPowerLevel(),
                         hero.getHeroType().getName(),
@@ -88,5 +90,16 @@ public class TeamService {
                 .toList();
     }
 
-
+    public List<TeamResponseDto> getAllTeamsWithoutOwnTeam(Authentication authentication){
+        long userId = getUser(authentication).getId();
+        List<Team> teamList = teamRepository.findAll();
+        return teamList.stream()
+                .filter(team -> team.getId() != userId && team.isPublic())
+                .map(team -> new TeamResponseDto(
+                        team.getId(),
+                        team.getTeamName(),
+                        team.getWins(),
+                        team.getLoses()
+                )).toList();
+    }
 }

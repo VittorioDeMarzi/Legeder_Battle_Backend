@@ -78,7 +78,7 @@ public class HeroService {
         return getHeroResponseDto(heroes);
     }
 
-    private static List<HeroResponseDto> getHeroResponseDto(List<Hero> heroes) {
+    public List<HeroResponseDto> getHeroResponseDto(List<Hero> heroes) {
         return heroes.stream()
                 .map(hero -> new HeroResponseDto(
                         hero.getId(),
@@ -136,9 +136,20 @@ public class HeroService {
         long legends = heroes.stream().filter(hero -> hero.getHeroType().getId() == 4).count();
 
         return (rookies == 1 && normals == 2 && veterans == 1 && legends == 1);
+    }
 
-
-
+    public List<HeroResponseDto> getFightTeam(Authentication authentication){
+        long teamId = getTeam(authentication).getId();
+        List<Hero> heroList = heroRepository.findAllByTeamId(teamId);
+        return heroList.stream()
+                .filter(Hero::isTaken)
+                .map(hero -> new HeroResponseDto(
+                        hero.getId(),
+                        hero.getName(),
+                        hero.getPowerLevel(),
+                        hero.getHeroType().getName(),
+                        hero.isTaken()
+                )).toList();
     }
 
 }
