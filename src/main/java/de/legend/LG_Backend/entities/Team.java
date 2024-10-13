@@ -34,9 +34,23 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE})
     @JsonIgnore
     private List<Hero> heroes;
+
+    @Column
+    @Value("0")
+    private int matchCounter;
     
     @Transient
     private int heroListSize;
+
+    @Transient
+    private List<Hero> takenHeroes;
+
+    public List<Hero> getTakenHeroes(){
+        if(takenHeroes == null) {
+            takenHeroes = heroes.stream().filter(Hero::isTaken).toList();
+        }
+        return takenHeroes;
+    }
 
     public Team() {
     }
@@ -104,5 +118,18 @@ public class Team {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getMatchCounter() {
+        return matchCounter;
+    }
+
+    public void setMatchCounter(int matchCounter) {
+        this.matchCounter = matchCounter;
+    }
+
+
+    public void setTakenHeroes(List<Hero> takenHeroes) {
+        this.takenHeroes = takenHeroes;
     }
 }

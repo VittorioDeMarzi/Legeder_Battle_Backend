@@ -1,7 +1,9 @@
 package de.legend.LG_Backend.servicies;
 
+import de.legend.LG_Backend.dtos.HeroDto.HeroResponseDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamRequestDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
+import de.legend.LG_Backend.entities.Hero;
 import de.legend.LG_Backend.entities.Team;
 import de.legend.LG_Backend.entities.User;
 import de.legend.LG_Backend.repository.TeamRepository;
@@ -10,6 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -66,5 +71,20 @@ public class TeamService {
         } catch (Exception e) {
             throw new NullPointerException();
         }
+    }
+
+    public List<HeroResponseDto> getFightTeam(Authentication authentication){
+        User user = getUser(authentication);
+        Team team = user.getTeam();
+
+        if(team ==null) throw new NoSuchElementException("User does not have a team");
+        List<Hero> heroList = team.getTakenHeroes();
+        return heroList.stream()
+                .map(hero -> new HeroResponseDto(
+                        hero.getName(),
+                        hero.getPowerLevel(),
+                        hero.getHeroType().getName(),
+                        hero.isTaken()))
+                .toList();
     }
 }

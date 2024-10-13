@@ -29,9 +29,6 @@ public class HeroType {
     @Column
     private double health;
 
-    @Transient
-    private double damage;
-
     public long getId() {
         return id;
     }
@@ -94,6 +91,5 @@ public class HeroType {
     }
 
     public void setDamage(double damage) {
-        this.damage = damage;
     }
 }
