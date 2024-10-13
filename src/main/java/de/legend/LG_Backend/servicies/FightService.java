@@ -51,7 +51,6 @@ public class FightService {
 
             FightHistory fightHistory = new FightHistory();
             fightHistory.setBattleName("Team: " + teamUser1.getTeamName() + " fordert Team: " + teamUser2.getTeamName() + " heraus!");
-            fightHistory.setAttacker(user1);
             fightHistory.setOpponent(user2);
 
             Set<Long> usedHeroes = new HashSet<>();

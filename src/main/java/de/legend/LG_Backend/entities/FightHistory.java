@@ -31,9 +31,8 @@ public class FightHistory {
     public FightHistory() {
     }
 
-    public FightHistory(String battleName, User attacker, User opponent, int attackerPoints, int opponentPoints) {
+    public FightHistory(String battleName, User opponent, int attackerPoints, int opponentPoints) {
         this.battleName = battleName;
-        this.attacker = attacker;
         this.opponent = opponent;
         this.attackerPoints = attackerPoints;
         this.opponentPoints = opponentPoints;
@@ -61,14 +60,6 @@ public class FightHistory {
 
     public void setBattleName(String battleName) {
         this.battleName = battleName;
-    }
-
-    public User getAttacker() {
-        return attacker;
-    }
-
-    public void setAttacker(User attacker) {
-        this.attacker = attacker;
     }
 
     public User getOpponent() {
