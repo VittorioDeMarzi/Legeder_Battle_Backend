@@ -97,7 +97,7 @@ public class TeamService {
         return teamList.stream()
                 .filter(team -> team.getUser().getId() != userId && team.isPublic())
                 .map(team -> new TeamWithUserIdResponseDto(
-                        userId,
+                        team.getUser().getId(),
                         team.getId(),
                         team.getTeamName(),
                         team.getWins(),
