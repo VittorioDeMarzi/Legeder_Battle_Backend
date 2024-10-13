@@ -51,7 +51,6 @@ public class HeroService {
     public List<HeroResponseDto> getAllHeroes(Authentication authentication) {
         Team team = getTeam(authentication);
         List<Hero> heroes = heroRepository.findAllByTeam(team);
-
         return getHeroResponseDto(heroes);
     }
 
