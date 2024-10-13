@@ -90,16 +90,15 @@ public class TeamService {
                 .toList();
     }
 
-//    public List<TeamResponseDto> getAllTeamWithoutOwnTeam(Authentication authentication){
-//        long userId = getUser(authentication).getId();
-//        List<Team> teamList = teamRepository.findAll();
-//        teamList.stream().filter(team -> {})
-//        try {
-//            Team team = user.getTeam();
-//            return new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
-//        } catch (Exception e) {
-//            throw new NullPointerException();
-//        }
-//    }
+    public List<TeamResponseDto> getAllTeamWithoutOwnTeam(Authentication authentication){
+        long userId = getUser(authentication).getId();
+        List<Team> teamList = teamRepository.findAll();
+        teamList.stream().filter(team -> {})
+        try {
+
+        } catch (Exception e) {
+            throw new NullPointerException();
+        }
+    }
 
 }
