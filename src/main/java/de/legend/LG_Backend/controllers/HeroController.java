@@ -44,8 +44,8 @@ public class HeroController {
     }
 
     @GetMapping("/getHeroList")
-    public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestParam Long heroId, Authentication authentication){
-        return ResponseEntity.ok(heroService.getAllOfOneHeroType(heroId, authentication));
+    public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestParam Long heroTypeId, Authentication authentication){
+        return ResponseEntity.ok(heroService.getAllOfOneHeroType(heroTypeId, authentication));
     }
 
     @PutMapping("/setFightTeam")

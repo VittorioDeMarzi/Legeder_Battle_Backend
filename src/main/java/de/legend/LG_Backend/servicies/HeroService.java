@@ -45,7 +45,7 @@ public class HeroService {
         hero.setTeam(team);
         team.getHeroes().add(hero);
         heroRepository.save(hero);
-        return new HeroResponseDto(hero.getName(), hero.getPowerLevel(), hero.getHeroType().getName(), hero.isTaken());
+        return new HeroResponseDto(hero.getId(), hero.getName(), hero.getPowerLevel(), hero.getHeroType().getName(), hero.isTaken());
     }
 
     public int randomLevelPower(int min, int max) {
@@ -62,7 +62,7 @@ public class HeroService {
     public HeroResponseDto getHero(long heroId, Authentication authentication) {
         Team team = getTeam(authentication);
         Hero hero = heroRepository.findByTeamAndId(team, heroId).orElseThrow(() -> new NoSuchElementException("Hero not found"));
-        return new HeroResponseDto(hero.getName(), hero.getPowerLevel(), hero.getHeroType().getName(), hero.isTaken());
+        return new HeroResponseDto(hero.getId(), hero.getName(), hero.getPowerLevel(), hero.getHeroType().getName(), hero.isTaken());
     }
 
     public void setTaken(HeroIdDto dto, Authentication authentication) {
@@ -81,6 +81,7 @@ public class HeroService {
     private static List<HeroResponseDto> getHeroResponseDto(List<Hero> heroes) {
         return heroes.stream()
                 .map(hero -> new HeroResponseDto(
+                        hero.getId(),
                         hero.getName(),
                         hero.getPowerLevel(),
                         hero.getHeroType().getName(),
