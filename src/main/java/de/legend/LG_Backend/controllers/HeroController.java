@@ -4,7 +4,6 @@ import de.legend.LG_Backend.dtos.HeroDto.FightTeamRequestDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroIdDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroRequestDto;
 import de.legend.LG_Backend.dtos.HeroDto.HeroResponseDto;
-import de.legend.LG_Backend.dtos.HeroTypeDtos.HeroTypeRequestDto;
 import de.legend.LG_Backend.servicies.HeroService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -46,7 +45,7 @@ public class HeroController {
 
     @GetMapping("/getHeroList")
     public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestParam Long heroId, Authentication authentication){
-        return ResponseEntity.ok(heroService.getAllOfOneHeroTypeAndNotTaken(heroId, authentication));
+        return ResponseEntity.ok(heroService.getAllOfOneHeroType(heroId, authentication));
     }
 
     @PutMapping("/setFightTeam")

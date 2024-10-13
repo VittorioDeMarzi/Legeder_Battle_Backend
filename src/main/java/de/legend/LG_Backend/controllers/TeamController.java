@@ -55,4 +55,7 @@ public class TeamController {
             throw new RuntimeException(e);
         }
     }
+
+//    @PutMapping
+//    public void setTeamPublic(Authentication a)
 }

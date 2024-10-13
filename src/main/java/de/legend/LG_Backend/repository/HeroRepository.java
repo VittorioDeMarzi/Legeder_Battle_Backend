@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface HeroRepository extends JpaRepository<Hero, Long> {
     List<Hero> findAllByTeam(Team team);
-    List<Hero> findAllByHeroTypeIdAndTeamAndIsTakenFalse(Long heroTypeId, Team team);
+    List<Hero> findAllByHeroTypeIdAndTeam(Long heroTypeId, Team team);
     Optional<Hero> findByTeamAndId(Team team, long id);
     List<Hero> findAllByTeamId(long teamId);
 }
+
