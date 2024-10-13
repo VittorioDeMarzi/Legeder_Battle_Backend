@@ -2,6 +2,7 @@ package de.legend.LG_Backend.controllers;
 
 import de.legend.LG_Backend.dtos.TeamDtos.TeamRequestDto;
 import de.legend.LG_Backend.dtos.TeamDtos.TeamResponseDto;
+import de.legend.LG_Backend.dtos.TeamDtos.TeamWithUserIdResponseDto;
 import de.legend.LG_Backend.servicies.TeamService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,7 +58,7 @@ public class TeamController {
     }
 
     @GetMapping("/anotherTeams")
-    public ResponseEntity<List<TeamResponseDto>> getAllTeams(Authentication authentication){
+    public ResponseEntity<List<TeamWithUserIdResponseDto>> getAllTeams(Authentication authentication){
         return ResponseEntity.ok(teamService.getAllTeamsWithoutOwnTeam(authentication));
     }
 
