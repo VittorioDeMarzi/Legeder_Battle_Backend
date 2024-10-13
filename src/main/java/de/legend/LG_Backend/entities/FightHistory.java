@@ -15,10 +15,10 @@ public class FightHistory {
     @Column
     private String battleName;
 
-    @Column
+   @ManyToOne
     private User attacker;
 
-    @Column
+    @ManyToOne
     private User opponent;
 
     @Column
