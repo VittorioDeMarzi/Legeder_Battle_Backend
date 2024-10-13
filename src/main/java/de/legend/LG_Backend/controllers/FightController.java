@@ -1,6 +1,7 @@
 package de.legend.LG_Backend.controllers;
 
 import de.legend.LG_Backend.servicies.FightService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,8 @@ public class FightController {
     }
 
     @PostMapping
-    public void startFight(@RequestParam Long userId, Authentication authentication) {
+    public ResponseEntity<Void> startFight(@RequestParam Long userId, Authentication authentication) {
         fightService.startFight(authentication, userId);
+        return ResponseEntity.ok().build();
     }
 }
