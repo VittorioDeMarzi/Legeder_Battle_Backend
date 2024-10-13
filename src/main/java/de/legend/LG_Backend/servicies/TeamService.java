@@ -90,15 +90,5 @@ public class TeamService {
                 .toList();
     }
 
-    public List<TeamResponseDto> getAllTeamWithoutOwnTeam(Authentication authentication){
-        long userId = getUser(authentication).getId();
-        List<Team> teamList = teamRepository.findAll();
-        teamList.stream().filter(team -> {})
-        try {
-
-        } catch (Exception e) {
-            throw new NullPointerException();
-        }
-    }
 
 }
