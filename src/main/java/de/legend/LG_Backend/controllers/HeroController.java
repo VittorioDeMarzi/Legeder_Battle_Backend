@@ -45,6 +45,6 @@ public class HeroController {
 
     @GetMapping("/getHeroList")
     public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestBody @Validated HeroTypeRequestDto dto, Authentication authentication){
-        return ResponseEntity.ok(heroService.getAllFromOneHeroTypeAndNotTaken(dto.heroTypeId(), authentication));
+        return ResponseEntity.ok(heroService.getAllOfOneHeroTypeAndNotTaken(dto.heroTypeId(), authentication));
     }
 }
