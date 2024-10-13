@@ -24,6 +24,7 @@ public class FightLog {
     private Hero defender;
 
     @Column
+    @OrderBy("timestamp ASC")
     private LocalDateTime timestamp;
 
     @PrePersist
