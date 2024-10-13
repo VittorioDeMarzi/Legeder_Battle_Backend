@@ -16,6 +16,9 @@ public class FightHistory {
     private String battleName;
 
     @ManyToOne
+    private User attacker;
+
+    @ManyToOne
     private User opponent;
 
     @Column
@@ -100,5 +103,13 @@ public class FightHistory {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public User getAttacker() {
+        return attacker;
+    }
+
+    public void setAttacker(User attacker) {
+        this.attacker = attacker;
     }
 }

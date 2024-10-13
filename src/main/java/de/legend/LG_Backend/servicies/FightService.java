@@ -51,8 +51,8 @@ public class FightService {
             List<Hero> heroesTeam2 = teamUser2.getTakenHeroes();
 
             FightHistory fightHistory = new FightHistory();
-
-
+            fightHistory.setAttacker(user1);
+            fightHistory.setOpponent(user2);
 
             String fightIntro = "Team " + teamUser1.getTeamName() + " (Helden: " + heroesTeam1
                     .stream().map(Hero::getName).collect(Collectors.joining(", ")) + ") vs. " +
@@ -60,6 +60,7 @@ public class FightService {
                     .stream().map(Hero::getName).collect(Collectors.joining(", ")) + ")";
             FightLog introLog = new FightLog(fightHistory, fightIntro, null, null);
             fightLogRepository.save(introLog);
+            fightHistory.setAttacker(user1);
             fightHistory.setOpponent(user2);
 
             HashSet<Long> usedHeroes = new HashSet<>();
@@ -94,9 +95,13 @@ public class FightService {
                 winnerTeam = teamUser2.getTeamName();
             }
 
+            teamUser1.setMatchCounter(teamUser1.getMatchCounter()+1);
+            teamUser2.setMatchCounter(teamUser2.getMatchCounter()+1);
             teamRepository.save(teamUser1);
             teamRepository.save(teamUser2);
-            fightHistory.setBattleName("Team: " + teamUser1.getTeamName() + " fordert Team: " + teamUser2.getTeamName() + " heraus! Nach einem harten aber fairen Kampf hat Team: " + winnerTeam+ " gewonnen!");
+            fightHistory.setBattleName("Team: " + teamUser1.getTeamName() + " fordert Team: "
+                    + teamUser2.getTeamName() + " heraus! Nach einem harten aber fairen Kampf hat Team: "
+                    + winnerTeam+ " gewonnen!");
             fightHistoryRepository.save(fightHistory);
         }
     }
