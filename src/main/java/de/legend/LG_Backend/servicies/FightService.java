@@ -7,9 +7,12 @@ import de.legend.LG_Backend.repository.HeroRepository;
 import de.legend.LG_Backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 @Service
 public class FightService {
@@ -27,31 +30,47 @@ public class FightService {
         this.userRepository = userRepository;
     }
 
-    public Team getTeam(User user){
+    public Team getTeam(User user) {
         Team team = user.getTeam();
         if (team == null) throw new NoSuchElementException("User does not have a team");
         return team;
     }
 
+    @Transactional
     public void startFight(Authentication authentication, long opponentId) {
         User user1 = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(()-> new NoSuchElementException("User not found"));
-        User user2 = userRepository.findById(opponentId).orElseThrow(()-> new NoSuchElementException("User not found"));
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        User user2 = userRepository.findById(opponentId).orElseThrow(() -> new NoSuchElementException("User not found"));
         Team teamUser1 = getTeam(user1);
         Team teamUser2 = getTeam(user2);
 
-        List<Hero> heroesTeam1 = teamUser1.getTakenHeroes();
-        List<Hero> heroesTeam2 = teamUser2.getTakenHeroes();
+        if (teamUser1.isPublic() && teamUser2.isPublic()) {
 
-        FightHistory fightHistory = new FightHistory();
-        fightHistory.setAttacker(user1);
-        fightHistory.setOpponent(user2);
+            List<Hero> heroesTeam1 = teamUser1.getTakenHeroes();
+            List<Hero> heroesTeam2 = teamUser2.getTakenHeroes();
 
-        long hero1Id = 1L;
-        long hero2Id = 2L;
-        fight(hero1Id, hero2Id, fightHistory);
+            FightHistory fightHistory = new FightHistory();
+            fightHistory.setBattleName("Team: " + teamUser1.getTeamName() + " fordert Team: " + teamUser2.getTeamName() + " heraus!");
+            fightHistory.setAttacker(user1);
+            fightHistory.setOpponent(user2);
 
-        fightHistoryRepository.save(fightHistory);
+            Set<Long> usedHeroes = new HashSet<>();
+
+            heroesTeam1.forEach(hero -> {
+                long attacker = hero.getId();
+                long heroType = hero.getHeroType().getId();
+
+                heroesTeam2.stream()
+                        .filter(hero1 -> heroType == hero1.getHeroType().getId() && !usedHeroes.contains(hero1.getId()))
+                        .findFirst()
+                        .ifPresent(hero1 -> {
+                            long opponent = hero1.getId();
+                            fight(attacker, opponent, fightHistory);
+                            usedHeroes.add(opponent);
+                        });
+            });
+            fightHistoryRepository.save(fightHistory);
+        }
     }
 
 
@@ -108,13 +127,23 @@ public class FightService {
             if (isHero1Turn) {
                 attacker = hero1;
                 defender = hero2;
+                logMessage = "Runde: " + round;
+
+                FightLog fightLog = new FightLog(
+                        fightHistory,
+                        logMessage,
+                        attacker,
+                        defender
+                );
+                fightLogRepository.save(fightLog);
+
                 if (heroIsBlock(hero2.calculateBlockFactor())) {
-                    logMessage = "Der Angriff von " + hero1Name + " wurde geblockt";
+                    logMessage = hero1Name + "Der Angriff von " + hero1Name + " wurde geblockt";
                 } else {
                     double damage = getRandomDamage(minDamageHero1, maxDamageHero1);
                     damage = getCriticalHitChance(damage);
                     healthHero2 -= damage;
-                    logMessage = hero2Name + "erleidet einen Schaden von " + damage;
+                    logMessage = hero2Name + " erleidet einen Schaden von " + damage;
                 }
             } else {
                 attacker = hero2;
@@ -130,10 +159,10 @@ public class FightService {
             }
 
             FightLog fightLog = new FightLog(
-                   fightHistory,
-                   logMessage,
-                   attacker,
-                   defender
+                    fightHistory,
+                    logMessage,
+                    attacker,
+                    defender
             );
 
             fightLogRepository.save(fightLog);
@@ -141,11 +170,10 @@ public class FightService {
         }
 
         if (healthHero1 <= 0) {
-            logMessage = " geht zu Boden und verliert den Fight" + hero2Name + " hat gewonnen!";
+            logMessage = hero1Name + " geht zu Boden und verliert den Fight" + hero2Name + " hat gewonnen!";
             hero1Win = 1;
-        }
-        else {
-            logMessage = " geht zu Boden und verliert den Fight" + hero1Name + " hat gewonnen!";
+        } else {
+            logMessage = hero2Name + " geht zu Boden und verliert den Fight" + hero1Name + " hat gewonnen!";
             hero2Win = 1;
         }
 
@@ -155,9 +183,10 @@ public class FightService {
                 attacker,
                 defender
         );
+        fightLogRepository.save(fightLog);
 
-        fightHistory.setAttackerPoints(hero1Win);
-        fightHistory.setOpponentPoints(hero2Win);
+        fightHistory.setAttackerPoints(fightHistory.getAttackerPoints() + hero1Win);
+        fightHistory.setOpponentPoints(fightHistory.getOpponentPoints() + hero2Win);
 
     }
 }

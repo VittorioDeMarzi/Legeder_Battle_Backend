@@ -92,4 +92,6 @@ public class HeroType {
 
     public void setDamage(double damage) {
     }
+
+
 }
