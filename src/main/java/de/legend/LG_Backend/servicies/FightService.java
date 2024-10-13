@@ -8,6 +8,7 @@ import de.legend.LG_Backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -38,6 +39,9 @@ public class FightService {
         User user2 = userRepository.findById(opponentId).orElseThrow(()-> new NoSuchElementException("User not found"));
         Team teamUser1 = getTeam(user1);
         Team teamUser2 = getTeam(user2);
+
+        List<Hero> heroesTeam1 = teamUser1.getTakenHeroes();
+        List<Hero> heroesTeam2 = teamUser2.getTakenHeroes();
 
         FightHistory fightHistory = new FightHistory();
         fightHistory.setAttacker(user1);
@@ -154,5 +158,6 @@ public class FightService {
 
         fightHistory.setAttackerPoints(hero1Win);
         fightHistory.setOpponentPoints(hero2Win);
+
     }
 }
