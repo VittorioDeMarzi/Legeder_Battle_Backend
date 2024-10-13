@@ -36,7 +36,7 @@ public class TeamService {
         user.setTeam(team);
         teamRepository.save(team);
         userRepository.save(user);
-        return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
+        return new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
     }
 
     public void updateTeamName(TeamRequestDto dto, Authentication authentication){
@@ -67,7 +67,7 @@ public class TeamService {
         User user = getUser(authentication);
         try {
             Team team = user.getTeam();
-            return new TeamResponseDto(team.getTeamName(), team.getWins(), team.getLoses());
+            return new TeamResponseDto(team.getId(), team.getTeamName(), team.getWins(), team.getLoses());
         } catch (Exception e) {
             throw new NullPointerException();
         }
@@ -81,6 +81,7 @@ public class TeamService {
         List<Hero> heroList = team.getTakenHeroes();
         return heroList.stream()
                 .map(hero -> new HeroResponseDto(
+                        hero.getId(),
                         hero.getName(),
                         hero.getPowerLevel(),
                         hero.getHeroType().getName(),
