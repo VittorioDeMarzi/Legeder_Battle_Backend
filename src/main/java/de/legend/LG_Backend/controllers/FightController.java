@@ -1,5 +1,6 @@
 package de.legend.LG_Backend.controllers;
 
+import de.legend.LG_Backend.dtos.FightHistory.FightHistoryResponseDto;
 import de.legend.LG_Backend.servicies.FightService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -17,8 +18,7 @@ public class FightController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> startFight(@RequestParam Long userId, Authentication authentication) {
-        fightService.startFight(authentication, userId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<FightHistoryResponseDto> startFight(@RequestParam Long userId, Authentication authentication) {
+        return ResponseEntity.ok(fightService.startFight(authentication, userId));
     }
 }
