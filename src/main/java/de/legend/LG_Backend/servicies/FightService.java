@@ -7,6 +7,7 @@ import de.legend.LG_Backend.repository.HeroRepository;
 import de.legend.LG_Backend.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -35,6 +36,7 @@ public class FightService {
         return team;
     }
 
+    @Transactional
     public void startFight(Authentication authentication, long opponentId) {
         User user1 = userRepository.findByEmail(authentication.getName())
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
@@ -125,13 +127,23 @@ public class FightService {
             if (isHero1Turn) {
                 attacker = hero1;
                 defender = hero2;
+                logMessage = "Runde: " + round;
+
+                FightLog fightLog = new FightLog(
+                        fightHistory,
+                        logMessage,
+                        attacker,
+                        defender
+                );
+                fightLogRepository.save(fightLog);
+
                 if (heroIsBlock(hero2.calculateBlockFactor())) {
-                    logMessage = "Der Angriff von " + hero1Name + " wurde geblockt";
+                    logMessage = hero1Name + "Der Angriff von " + hero1Name + " wurde geblockt";
                 } else {
                     double damage = getRandomDamage(minDamageHero1, maxDamageHero1);
                     damage = getCriticalHitChance(damage);
                     healthHero2 -= damage;
-                    logMessage = hero2Name + "erleidet einen Schaden von " + damage;
+                    logMessage = hero2Name + " erleidet einen Schaden von " + damage;
                 }
             } else {
                 attacker = hero2;
@@ -158,10 +170,10 @@ public class FightService {
         }
 
         if (healthHero1 <= 0) {
-            logMessage = " geht zu Boden und verliert den Fight" + hero2Name + " hat gewonnen!";
+            logMessage = hero1Name + " geht zu Boden und verliert den Fight" + hero2Name + " hat gewonnen!";
             hero1Win = 1;
         } else {
-            logMessage = " geht zu Boden und verliert den Fight" + hero1Name + " hat gewonnen!";
+            logMessage = hero2Name + " geht zu Boden und verliert den Fight" + hero1Name + " hat gewonnen!";
             hero2Win = 1;
         }
 
@@ -171,9 +183,10 @@ public class FightService {
                 attacker,
                 defender
         );
+        fightLogRepository.save(fightLog);
 
-        fightHistory.setAttackerPoints(hero1Win);
-        fightHistory.setOpponentPoints(hero2Win);
+        fightHistory.setAttackerPoints(fightHistory.getAttackerPoints() + hero1Win);
+        fightHistory.setOpponentPoints(fightHistory.getOpponentPoints() + hero2Win);
 
     }
 }

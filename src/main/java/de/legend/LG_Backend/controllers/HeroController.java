@@ -47,4 +47,10 @@ public class HeroController {
     public ResponseEntity<List<HeroResponseDto>> getHeroesFromOneHeroType(@RequestParam Long heroId, Authentication authentication){
         return ResponseEntity.ok(heroService.getAllOfOneHeroTypeAndNotTaken(heroId, authentication));
     }
+
+    @PostMapping("/setFightTeam")
+    public ResponseEntity<Void> setFightTeam(@RequestBody @Validated HeroIdDto dto, Authentication authentication){
+        heroService.setTaken(dto, authentication);
+        return ResponseEntity.ok().build();
+    }
 }

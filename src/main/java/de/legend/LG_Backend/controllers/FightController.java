@@ -16,7 +16,7 @@ public class FightController {
     }
 
     @PostMapping
-    public void startFight(@RequestParam Long id, Authentication authentication) {
-        fightService.startFight(authentication, id);
+    public void startFight(@RequestParam Long userId, Authentication authentication) {
+        fightService.startFight(authentication, userId);
     }
 }
