@@ -20,8 +20,14 @@ public class Hero {
     @Value("false")
     private boolean isTaken;
 
-    @OneToOne
+    @ManyToOne
     private HeroType heroType;
+
+    @ManyToOne
+    private Team team;
+
+    public Hero() {
+    }
 
     public long getId() {
         return id;
@@ -61,5 +67,26 @@ public class Hero {
 
     public void setHeroType(HeroType heroType) {
         this.heroType = heroType;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public double calculateBlockFactor() {
+        double blockQuote = this.heroType.getBlockQuote();
+        double level = this.powerLevel;
+        double blockFactor = (level / 100) + blockQuote;
+        return Math.min(blockFactor, 1.0);
+    }
+
+    public double calculateMaxDamage() {
+        double level = this.powerLevel;
+        double damage = this.heroType.getDamage();
+        return (level * this.heroType.getAttackFactor()) + damage;
     }
 }

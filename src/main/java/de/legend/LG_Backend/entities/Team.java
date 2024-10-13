@@ -1,5 +1,6 @@
 package de.legend.LG_Backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -11,6 +12,12 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @OneToOne
+    private User user;
+
+    @Column
+    private String teamName;
 
     @Column
     @Value("0")
@@ -24,14 +31,33 @@ public class Team {
     @Value("false")
     private boolean isPublic;
 
-    @OneToOne
-    private User user;
-
-    @OneToMany
+    @OneToMany(mappedBy = "team", cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE})
+    @JsonIgnore
     private List<Hero> heroes;
+
+    @Column
+    @Value("0")
+    private int matchCounter;
     
     @Transient
     private int heroListSize;
+
+    @Transient
+    private List<Hero> takenHeroes;
+
+    public List<Hero> getTakenHeroes(){
+        if(takenHeroes == null) {
+            takenHeroes = heroes.stream().filter(Hero::isTaken).toList();
+        }
+        return takenHeroes;
+    }
+
+    public Team() {
+    }
+
+    public Team(String teamName) {
+        this.teamName = teamName;
+    }
 
     public long getId() {
         return id;
@@ -77,11 +103,33 @@ public class Team {
         return heroes.size();
     }
 
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getMatchCounter() {
+        return matchCounter;
+    }
+
+    public void setMatchCounter(int matchCounter) {
+        this.matchCounter = matchCounter;
+    }
+
+
+    public void setTakenHeroes(List<Hero> takenHeroes) {
+        this.takenHeroes = takenHeroes;
     }
 }
