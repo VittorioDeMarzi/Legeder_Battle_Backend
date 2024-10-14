@@ -5,6 +5,5 @@ public record FightHistoryResponseDto(
         int pointsAttacker,
         int pointsOpponent,
         String battleMessage
-
 ) {
 }
