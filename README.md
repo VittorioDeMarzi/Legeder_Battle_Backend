@@ -20,8 +20,3 @@ The frontend, built with React, features an intuitive interface for user registr
 ## 🌐 Frontend Repository
 
 - [Legender_Battle_Frontend](https://github.com/VittorioDeMarzi/Legender_Battle_Frontend)
-
-**Summary**:  
-This project highlights your skills in full-stack development, secure API creation, and UI/UX design. It demonstrates your ability to develop scalable, interactive applications while utilizing technologies like Spring Boot, React, and Docker. 🚀  
-
-Let me know if you’d like any adjustments! 😊
